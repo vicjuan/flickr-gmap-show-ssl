@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messagebundle>
+<msg name="title">Flickr Gmap Show</msg>
+<msg name="description">Browse flickr (and Panoramio) geotagged photos on Google map</msg>
+<msg name="date">Date: </msg>
+<msg name="sort">Sort: </msg>
+<msg name="search">Search: </msg>
+<msg name="datetakendesc">taken date (desc)</msg>
+<msg name="datetakenasc">taken date (asc)</msg>
+<msg name="dateposteddesc">posted date (desc)</msg>
+<msg name="datepostedasc">posted date (asc)</msg>
+<msg name="interestingnessdesc">interestingness (desc)</msg>
+<msg name="interestingnessasc">interestingness (asc)</msg>
+<msg name="relevance">relevance</msg>
+<msg name="currpage">$1 ~ $2 of $3 photos</msg>
+<msg name="takenon">Taken on $1</msg>
+<msg name="postby">Posted by $1</msg>
+<msg name="viewonsite">View this photo on $1</msg>
+<msg name="usepanoramio">Add Panoramio source</msg>
+<msg name="prevpage">Previous Page</msg>
+<msg name="nextpage">Next Page</msg>
+<msg name="toggle">Toggle Control Panel</msg>
+</messagebundle>

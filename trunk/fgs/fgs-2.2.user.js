@@ -29,7 +29,7 @@ var currVer = '2.2';
 var js_jquery = 'http://jqueryjs.googlecode.com/files/jquery-1.1.3.1.js';
 var js_gmap = 'http://maps.google.com/maps?file=api&v=2.x';
 
-var imgdir = 'http://flickr-gmap-show.googlecode.com/svn/trunk/pics/';
+var imgdir = 'http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/pics/';
 var imgs = {
   loading         : imgdir+'loading.gif',
   loading_s       : imgdir+'loading_s.gif',

@@ -5,7 +5,7 @@ var FLICKR_API_SECRET = "4260ccd8c3f7837e";
 var imgPrevImg = "http://l.yimg.com/www.flickr.com/images/simple_prev_default.gif";
 var imgNextImg = "http://l.yimg.com/www.flickr.com/images/simple_next_default.gif";
 var imgPosition = "http://l.yimg.com/www.flickr.com/images/dot1_p.png";
-var imgLoading = "http://flickr-gmap-show.googlecode.com/svn/trunk/lightbox/images/loading.gif";		
+var imgLoading = "http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/lightbox/images/loading.gif";		
 
 // Create our "tiny" marker icon
 var markerIcon=null;

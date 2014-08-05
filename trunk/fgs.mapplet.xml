@@ -3,10 +3,10 @@
 <ModulePrefs title="__MSG_title__" description="__MSG_description__" 
 author="wctang" author_photo="http://farm1.static.flickr.com/219/buddyicons/81718017@N00.jpg" author_email="wctang+fgsfeedback@gmail.com"
 author_link="http://blog.wctang.info/" author_location="Kaohsiung, Taiwan" author_affiliation="wctang.info"
-title_url="http://code.google.com/p/flickr-gmap-show/" screenshot="http://flickr-gmap-show.googlecode.com/svn/trunk/pics/fgs_mapplet_preview.png"
-thumbnail="http://flickr-gmap-show.googlecode.com/svn/trunk/pics/fgs_mapplet_thumb.png">
-  <Locale messages="http://flickr-gmap-show.googlecode.com/svn/trunk/msg-en.xml"/>
-  <Locale lang="zh-TW" messages="http://flickr-gmap-show.googlecode.com/svn/trunk/msg-zh-tw.xml"/>
+title_url="http://code.google.com/p/flickr-gmap-show/" screenshot="http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/pics/fgs_mapplet_preview.png"
+thumbnail="http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/pics/fgs_mapplet_thumb.png">
+  <Locale messages="http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/msg-en.xml"/>
+  <Locale lang="zh-TW" messages="http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/msg-zh-tw.xml"/>
   <Require feature="sharedmap"/>
   <Require feature="analytics"/>
   <Require feature="setprefs"/>
@@ -83,7 +83,7 @@ a.btn img {
   background:white;
 }
 .photoPanel .photos img {
-  background:url(http://flickr-gmap-show.googlecode.com/svn/trunk/pics/loading.gif) no-repeat bottom right;
+  background:url(http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/pics/loading.gif) no-repeat bottom right;
 }
 .photoPanel .photos img.flickr,
 #popupall img.flickr {
@@ -136,7 +136,7 @@ var msg_toggle = '__MSG_toggle__';
 //-- flickr gmap show common api --
 //---------------------------------
 
-var imgdir = 'http://flickr-gmap-show.googlecode.com/svn/trunk/pics/';
+var imgdir = 'http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/pics/';
 var imgs = {
   loading         : _IG_GetImage(imgdir+'loading.gif'),
   close_default   : _IG_GetImage(imgdir+'simple_close_default.gif'),
@@ -769,7 +769,7 @@ function mask(gmap) {
     mask.layer = $(
       '<div class="mask" style="position:absolute; top:0px; left:0px; cursor:wait; display:none;">'+
         '<div style="position:absolute; top:100px;">'+
-          '<img src="http://flickr-gmap-show.googlecode.com/svn/trunk/pics/loading.gif"/>'+
+          '<img src="http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/pics/loading.gif"/>'+
         '</div>'+
       '</div>').appendTo(p).get(0);
   }

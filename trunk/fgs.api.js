@@ -49,7 +49,7 @@ flickr = {
 _api_key : "ebed0eef1b25b738b1903ef93b8f25ee",
 _secret_key : "4260ccd8c3f7837e",
 _url : function(args, sign) {
-    var url = 'http://api.flickr.com/services/rest/?'
+    var url = 'https://api.flickr.com/services/rest/?'
     var signature = flickr._secret_key;
     var keys = [];
     for (var k in args) { keys.push(k); }

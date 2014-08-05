@@ -95,7 +95,7 @@ var flickr={
 		}
 	},
 	_url: function(args, sign) {
-		var url = 'http://api.flickr.com/services/rest/?';
+		var url = 'https://api.flickr.com/services/rest/?';
 		var keys = [];
 		for (var arg in args) { if(args.hasOwnProperty(arg)) {
 			if(arg.charAt(0)==='_') continue;

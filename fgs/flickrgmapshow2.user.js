@@ -151,7 +151,7 @@ var map_key = {
 var js_gmap = "http://www.google.com/jsapi?key=";
 
 var libs_loading = "data:image/gif;base64,R0lGODlhCgAKAJEDAMzMzP9mZv8AAP%2F%2F%2FyH%2FC05FVFNDQVBFMi4wAwEAAAAh%2BQQFAAADACwAAAAACgAKAAACF5wncgaAGgJzJ647cWua4sOBFEd62VEAACH5BAUAAAMALAEAAAAIAAMAAAIKnBM2IoMDAFMQFAAh%2BQQFAAADACwAAAAABgAGAAACDJwHMBGofKIRItJYAAAh%2BQQFAAADACwAAAEAAwAIAAACChxgOBPBvpYQYxYAIfkEBQAAAwAsAAAEAAYABgAAAgoEhmPJHOGgEGwWACH5BAUAAAMALAEABwAIAAMAAAIKBIYjYhOhRHqpAAAh%2BQQFAAADACwEAAQABgAGAAACDJwncqi7EQYAA0p6CgAh%2BQQJAAADACwHAAEAAwAIAAACCpRmoxoxvQAYchQAOw%3D%3D";
-var imgdir = 'http://flickr-gmap-show.googlecode.com/svn/trunk/pics/';
+var imgdir = 'http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/pics/';
 var pics = {
 	flickr_loading  : imgdir+'flickr_loading.gif',
 	marker_img      : imgdir+'marker_image.png',

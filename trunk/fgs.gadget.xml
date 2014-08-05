@@ -280,7 +280,7 @@ buddyurl : function(photo) {
 },
 date: function(photo) { return photo.datetaken.substr(0,10); },
 _url : function(args, sign) {
-  var url = 'http://api.flickr.com/services/rest/?'
+  var url = 'https://api.flickr.com/services/rest/?'
   var signature = flickr._secret_key;
   var keys = [];
   for (var k in args) { keys.push(k); }

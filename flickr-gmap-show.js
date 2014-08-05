@@ -292,7 +292,7 @@ flickr.keys = function(api_key, secret_key) {
 }
 flickr._url = function(args, sign, type) {
     if (!type) { type = 'rest'; }
-    var url = 'http://api.flickr.com/services/'+type+'/?'
+    var url = 'https://api.flickr.com/services/'+type+'/?'
     var signature = flickr._secret_key;
     var keys = new Array ();
     for (var k in args) { keys.push (k); }

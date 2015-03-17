@@ -1,0 +1,973 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="__MSG_title__" description="__MSG_description__" 
+author="wctang" author_photo="http://farm1.static.flickr.com/219/buddyicons/81718017@N00.jpg" author_email="wctang+fgsfeedback@gmail.com"
+author_link="http://blog.wctang.info/" author_location="Kaohsiung, Taiwan" author_affiliation="wctang.info"
+title_url="http://code.google.com/p/flickr-gmap-show/" screenshot="http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/pics/fgs_gadget_preview.png"
+thumbnail="http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/pics/fgs_gadget_thumb.png" height="400" scrolling="true" category="tools">
+  <Locale messages="http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/msg-en.xml"/>
+  <Locale lang="zh-TW" messages="http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/msg-zh-tw.xml"/>
+  <Require feature="analytics"/>
+  <Require feature="setprefs"/>
+  <Require feature="minimessage"/>
+</ModulePrefs>
+<UserPref name="usepanoramio" display_name="__MSG_usepanoramio__" datatype="bool" default_value="true"/>
+<UserPref name="lat" default_value="0" datatype="hidden" />
+<UserPref name="lng" default_value="0" datatype="hidden" />
+<UserPref name="zoom" default_value="12" datatype="hidden" />
+
+<Content type="html"><![CDATA[
+<style type="text/css">
+body {
+  margin:0;
+  padding:0;
+  height:100%;
+}
+#mapDiv {
+  width:100%;
+  height:350px;
+}
+#controlDiv {
+  width:100%;
+  background:white;
+  z-index:100;
+}
+#pageDiv {
+  margin-bottom:5px;
+}
+#settingDiv {
+  margin-bottom:5px;
+  overflow:hidden;
+}
+#fgs_search_form {
+  display:inline;
+}
+
+img {
+  border:0px;
+}
+
+.mask {
+  background:black;
+  opacity:.8;
+  -moz-opacity:.8;
+  filter:alpha(opacity=80);
+  z-index:200;
+}
+.mask div {
+  background:white;
+}
+
+.popup {
+  font-size: 12px; 
+  background:white;
+  opacity:0;
+  -moz-opacity:0;
+  filter:alpha(opacity=0);
+  z-index:300;
+}
+
+a.btn {
+  cursor:pointer;
+}
+.left {
+  float:left;
+}
+.right {
+  float:right;
+}
+a.btn img {
+  cursor:pointer;
+}
+
+#popupall {
+  z-index:150;
+}
+
+.photoPanel {
+  height:140px;
+  width:255px;
+  border:0px;
+}
+.photoPanel div {
+  position:relative; 
+  left:0px; 
+  width:255px; 
+  background:white;
+}
+.photoPanel .photos img {
+  background:url(http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/pics/loading.gif) no-repeat bottom right;
+}
+.photoPanel .photos img.flickr,
+#popupall img.flickr {
+  margin:4px;
+  border:solid 1px #FF0084;
+  cursor:pointer;
+}
+.photoPanel .photos img.panoramio,
+#popupall img.panoramio {
+  margin:4px;
+  border:solid 1px #006BB8;
+  cursor:pointer;
+}
+
+
+</style>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+</head>
+<body>
+<div id="mapDiv"></div>
+<div id="controlDiv" style="position:absolute;">
+<div id="pageDiv"></div>
+<div id="settingDiv" style="display:none;"></div>
+</div>
+
+<script type="text/javascript" src="http://maps.google.com/maps?file=api&v=2.x" type="text/javascript"></script>
+<script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.1.3.1.pack.js"></script>
+<script type="text/javascript">
+var _uacct = 'UA-359113-4';
+
+var msg = new _IG_MiniMessage(__MODULE_ID__);
+var prefs = new _IG_Prefs(__MODULE_ID__);
+
+var msg_date = '__MSG_date__';
+var msg_sort = '__MSG_sort__';
+var msg_datetakendesc = '__MSG_datetakendesc__';
+var msg_datetakenasc = '__MSG_datetakenasc__';
+var msg_dateposteddesc = '__MSG_dateposteddesc__';
+var msg_datepostedasc = '__MSG_datepostedasc__';
+var msg_interestingnessdesc = '__MSG_interestingnessdesc__';
+var msg_interestingnessasc = '__MSG_interestingnessasc__';
+var msg_relevance = '__MSG_relevance__';
+var msg_search = '__MSG_search__';
+var msg_currpage = '__MSG_currpage__';
+var msg_viewonsite = '__MSG_viewonsite__';
+var msg_takenon = '__MSG_takenon__';
+var msg_postby = '__MSG_postby__';
+var msg_prevpage = '__MSG_prevpage__';
+var msg_nextpage = '__MSG_nextpage__';
+var msg_toggle = '__MSG_toggle__';
+
+
+
+//---------------------------------
+//-- flickr gmap show common api --
+//---------------------------------
+
+var imgdir = 'http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/pics/';
+var imgs = {
+  loading         : _IG_GetImage(imgdir+'loading.gif'),
+  close_default   : _IG_GetImage(imgdir+'simple_close_default.gif'),
+  close_hover     : _IG_GetImage(imgdir+'simple_close_hover.gif'),
+  close_selected  : _IG_GetImage(imgdir+'simple_close_selected.gif'),
+  popup_default   : _IG_GetImage(imgdir+'simple_new_window_default.gif'),
+  popup_hover     : _IG_GetImage(imgdir+'simple_new_window_hover.gif'),
+  popup_selected  : _IG_GetImage(imgdir+'simple_new_window_selected.gif'),
+  updown_default  : _IG_GetImage(imgdir+'simple_updown_default.gif'),
+  updown_hover    : _IG_GetImage(imgdir+'simple_updown_hover.gif'),
+  updown_selected : _IG_GetImage(imgdir+'simple_updown_selected.gif'),
+  prev_default    : _IG_GetImage(imgdir+'simple_prev_default.gif'),
+  prev_hover      : _IG_GetImage(imgdir+'simple_prev_hover.gif'),
+  prev_selected   : _IG_GetImage(imgdir+'simple_prev_selected.gif'),
+  next_default    : _IG_GetImage(imgdir+'simple_next_default.gif'),
+  next_hover      : _IG_GetImage(imgdir+'simple_next_hover.gif'),
+  next_selected   : _IG_GetImage(imgdir+'simple_next_selected.gif'),
+  prevpg_default  : _IG_GetImage(imgdir+'simple_prev_default.gif'),
+  prevpg_hover    : _IG_GetImage(imgdir+'simple_prev_hover.gif'),
+  prevpg_selected : _IG_GetImage(imgdir+'simple_prev_selected.gif'),
+  nextpg_default  : _IG_GetImage(imgdir+'simple_next_default.gif'),
+  nextpg_hover    : _IG_GetImage(imgdir+'simple_next_hover.gif'),
+  nextpg_selected : _IG_GetImage(imgdir+'simple_next_selected.gif')
+};
+
+
+var MAX_ZOOM = 19;
+var MIN_ZOOM = 5;
+var PER_PAGE = 100;
+
+
+// utility
+function $extend(subc,basec) {
+    var inh=function(){}; inh.prototype=basec.prototype; subc.prototype=new inh(); subc.prototype.constructor=subc; 
+    subc.superclass=basec.prototype;
+    // ??? GMarker.prototype.constructor != GMarker
+    basec.prototype.constructor=basec;
+};
+function $cbtn(n, title, clickfun, targetObj) {
+    if(!$cbtn.mouseout) {
+        $cbtn.mouseout=function(){ this.firstChild.src=imgs[this.n+'_default'].src;};
+        $cbtn.mouseover=function(){ this.firstChild.src=imgs[this.n+'_hover'].src;};
+        $cbtn.mousedown=function(){ this.firstChild.src=imgs[this.n+'_selected'].src;};
+        $cbtn.mouseup=function(){ this.firstChild.src=imgs[this.n+'_hover'].src;};
+    }
+    var a = $('<a class="btn"><img/></a>').mouseout($cbtn.mouseout).mouseover($cbtn.mouseover).mousedown($cbtn.mousedown)
+                .mouseup($cbtn.mouseup);
+    if(clickfun && targetObj) a.click(function(){clickfun.call(targetObj);});
+    else if(clickfun)       a.click(clickfun);
+
+    if(title) a.attr('title',title);
+    a.get(0).n = n;
+    a.trigger('mouseout');
+    return a.get(0);
+};
+
+
+
+
+var FGS = {};
+
+(function() {
+
+var deltas = [0,0,0,0,0,
+0.7558876745860973,
+0.4381797339583715,
+0.2166893459120705,
+0.1054534198706207,
+0.0517575120441158,
+0.0256017451528869,
+0.012732042885645,
+0.00634837196261628,
+0.003169749786363714,
+0.001583755663266591,
+0.0007915970919446143,
+0.0003957279865313504,
+0.0001978462849822430,
+0.0000989186817588934,
+0.0000494593408794467];
+
+function $icon(n) {
+  if(!$icon.icons) $icon.icons=[];
+  if(n > 100) n = 100;
+  if(!$icon.icons[n]) {
+    var img = new GIcon(null, _IG_GetImageUrl(imgdir + n + '.png'));
+    if(n < 10) {
+      img.iconSize = new GSize(18, 19);
+      img.iconAnchor = new GPoint(9, 9);
+      img.infoWindowAnchor = new GPoint(9, 9);
+    } else if (n < 100) {
+      img.iconSize = new GSize(20, 21);
+      img.iconAnchor = new GPoint(10, 10);
+      img.infoWindowAnchor = new GPoint(10, 10);
+    } else {
+      img.iconSize = new GSize(26, 27);
+      img.iconAnchor = new GPoint(13, 13);
+      img.infoWindowAnchor = new GPoint(13, 13);
+    }
+    $icon.icons[n] = img;
+  }
+  return $icon.icons[n];
+};
+
+
+// flickr
+flickr = {
+name:'flickr',
+_api_key : "ebed0eef1b25b738b1903ef93b8f25ee",
+_secret_key : "4260ccd8c3f7837e",
+
+gettitle : function(photo) {return photo.title;},
+iconurl: function(photo) {return 'http://farm'+photo.farm+'.static.flickr.com/'+photo.server+'/'+photo.id+'_'+photo.secret+'_s.jpg';},
+smallurl: function(photo) {return 'http://farm'+photo.farm+'.static.flickr.com/'+photo.server+'/'+photo.id+'_'+photo.secret+'_m.jpg';},
+pageurl : function(photo) {return 'http://www.flickr.com/photo.gne?id='+photo.id;},
+owner: function(photo) {return photo.ownername ? photo.ownername : photo.owner;},
+ownerurl: function(photo) {return 'http://www.flickr.com/photos/'+photo.owner+'/';},
+hasbuddy: true,
+buddyurl : function(photo) {
+  if(photo.iconserver&parseInt(photo.iconserver)>0) return 'http://farm'+photo.iconfarm+'.static.flickr.com/'+photo.iconserver+'/buddyicons/'+photo.owner+'.jpg';
+  else return 'http://www.flickr.com/images/buddyicon.jpg';
+},
+date: function(photo) { return photo.datetaken.substr(0,10); },
+_url : function(args, sign) {
+  var url = 'https://api.flickr.com/services/rest/?'
+  var signature = flickr._secret_key;
+  var keys = [];
+  for (var k in args) { keys.push(k); }
+  keys.sort();
+  for (var i=0; i<keys.length; i++) {
+    var k = keys[i];
+    var v = args[k];
+//        signature = signature + k + v;
+    url += (i>0?'&':'') + _esc(k) + '=' + _esc(v);
+  }
+//    if(sign) {
+//        signature = Utilities.MD5(signature);
+//        url = url + '&api_sig='+signature;
+//    }
+  return url;
+},
+callapi : function(args, obj, callback, timestamp, parms, sign) {
+  args.api_key = flickr._api_key;
+  args.format = 'json';
+  args.nojsoncallback = '1';
+  if (flickr._token) { args.auth_token = flickr._token; }
+
+  _IG_FetchContent(flickr._url(args, sign), function(str) {
+    var rsp = null;
+    try {
+      if(timestamp == obj.timestamp && str) {
+        rsp = eval('(' + str + ')');
+        if(!rsp || rsp.stat != 'ok') rsp = null;
+      }
+    } finally {
+      var photos = null;
+      var total = 0;
+      if(rsp && typeof rsp == 'object') {
+        photos = rsp.photos.photo;
+        total = parseInt(rsp.photos.total);
+      }
+      callback.call(obj, flickr, photos, total, timestamp, parms);
+    }
+  });
+}
+};
+
+
+// panoramio
+panoramio = {
+name:'Panoramio',
+gettitle : function(photo) {return photo.photo_title;},
+iconurl: function(photo) {return photo.photo_file_url.replace('medium','square');},
+smallurl: function(photo) {return photo.photo_file_url.replace('medium','small');},
+pageurl : function(photo) {return photo.photo_url;},
+owner: function(photo) {return photo.owner_name;},
+ownerurl: function(photo) {return photo.owner_url;},
+hasbuddy: false,
+date: function(photo) { return photo.upload_date; },
+_url : function(args, sign) {
+  var url = 'http://www.panoramio.com/map/get_panoramas.php?'
+  var keys = [];
+  for (var k in args) { keys.push(k); }
+  keys.sort();
+  for (var i=0; i<keys.length; i++) {
+    var k = keys[i];
+    var v = args[k];
+    url += (i>0?'&':'') + _esc(k) + '=' + _esc(v);
+  }
+  return url;
+},
+callapi : function(args, obj, callback, timestamp, parms, sign) {
+  _IG_FetchContent(panoramio._url(args, sign), function(str) {
+    var rsp = null;
+    try {
+      if(timestamp == obj.timestamp && str) {
+        rsp = eval('(' + str + ')');
+      }
+    } finally {
+      var photos = null;
+      var total = 0;
+      if(rsp && typeof rsp == 'object') {
+        photos = rsp.photos;
+        total = rsp.count;
+      }
+      callback.call(obj, panoramio, photos, total, timestamp, parms);
+    }
+  });
+}
+};
+
+
+// FGS.Marker
+FGS.Marker=function(icon, photos, bounds) {
+  var position = bounds.getCenter();
+
+  FGS.Marker.superclass.constructor.call(this, position, {icon:icon});
+
+  this.photos = photos;
+  this.currpos = 0;
+  this.infowin = null;
+  GEvent.addListener(this, 'click', this.onClick);
+};
+$extend(FGS.Marker, GMarker);
+FGS.Marker.prototype.onClick = function() {
+  if(document.body.clientWidth < 280) {
+    return this.photolist_open();
+  }
+  if(!this.infowin) {
+    var infowin = $(
+      '<div class="photoPanel">'+
+        '<div style="height:40px; text-align:center;"></div>'+
+        '<div style="height:85px;" class="photos"></div>'+
+        '<div style="height:20px;"></div>'+
+      '</div>').get(0);
+    infowin.titl = infowin.childNodes[0];
+    var imags = infowin.childNodes[1];
+    var ctrl = infowin.childNodes[2];
+
+    var mx = $cbtn('popup','Popup', this.photolist_open, this);
+    $(mx).addClass('right');
+    var pre = $cbtn('prevpg',msg_prevpage, this.infowin_prev_img, this);
+    var nex = $cbtn('nextpg',msg_nextpage, this.infowin_next_img, this);
+    ctrl.appendChild(mx);
+    ctrl.appendChild(pre);
+    ctrl.appendChild(nex);
+
+    var info = $('<span/>').get(0);
+    ctrl.appendChild(info);
+    infowin.info = info;
+
+
+    var cssprop = {position:'absolute', width:75, height:75, display:'none'};
+    for(var i = 0, len = this.photos.length; i < len; ++i) {
+      var photo = this.photos[i];
+      var img = $('<img/>').attr('alt',photo.api.gettitle(photo)).addClass(photo.api.name).css(cssprop).bind('click',this.onPhotoClick).get(0);
+      img.photo=photo;
+      img.marker=this;
+      imags.appendChild(img);
+    }
+    this.infowin=infowin;
+    this.infowin.imags=imags.childNodes;
+  }
+
+  this.infowin_refresh_imglist(0);
+  this.infowin_open();
+}; 
+FGS.Marker.prototype.infowin_refresh_imglist = function(dir) {
+  var imags = this.infowin.imags;
+
+  var end = this.currpos + 5;
+  if( end > imags.length) end = imags.length;
+  for( var i = this.currpos; i<end; ++i) {
+      var img = imags[i];
+      if(!img.src) img.src=img.photo.api.iconurl(img.photo);
+  }
+
+  function disappear() {
+    $(this).hide();
+  };
+
+  var c = this.currpos;
+  var plmst = {left:0,top:0,width:0,height:0};
+  var pleft = {left:8,top:8,width:60,height:60};
+  var pcent = {left:85,top:0,width:75,height:75};
+  var prigt = {left:178,top:8,width:60,height:60};
+  var prmst = {left:245,top:75,width:0,height:0};
+  var speed=200;
+  for( var i = 0; i < imags.length; i++ ) {
+    var img=$(imags[i]);
+
+    if(dir==0) {
+      switch(i) {
+        case c-1: img.css(pleft).show(); break;
+        case c  : img.css(pcent).show(); break;
+        case c+1: img.css(prigt).show(); break;
+        default:  img.hide(); break;
+      }
+    } else if(dir>0) {
+      switch(i) {
+        case c-2: img.css(pleft).show().animate(plmst,speed,null,disappear); break;
+        case c-1: img.css(pcent).show().animate(pleft,speed); break;
+        case c  : img.css(prigt).show().animate(pcent,speed); break;
+        case c+1: img.css(prmst).show().animate(prigt,speed); break;
+        default:  img.hide(); break;
+      }
+    } else if(dir<0) {
+      switch(i) {
+        case c-1: img.css(plmst).show().animate(pleft,speed); break;
+        case c  : img.css(pleft).show().animate(pcent,speed); break;
+        case c+1: img.css(pcent).show().animate(prigt,speed); break;
+        case c+2: img.css(prigt).show().animate(prmst,speed,null,disappear); break;
+        default:  img.hide(); break;
+      }
+    }
+  }
+
+  this.infowin.titl.innerHTML=imags[this.currpos].alt;
+  this.infowin.info.innerHTML=' ' + (this.currpos+1) + ' of ' + imags.length + ' ';
+};
+FGS.Marker.prototype.infowin_next_img = function() {
+  if(this.currpos >= this.infowin.imags.length-1) return;
+
+  this.currpos++;
+  this.infowin_refresh_imglist(1);
+};
+FGS.Marker.prototype.infowin_prev_img = function() {
+  if( this.currpos <= 0) return;
+
+  this.currpos--;
+  this.infowin_refresh_imglist(-1);
+};
+FGS.Marker.prototype.onPhotoClick = function() {
+  var w = document.body.clientWidth;
+  var h = document.body.clientHeight;
+  var overlay = $(
+    '<div><div class="mask" style="position:absolute; top:0px; left:0px; width:'+w+'px; height:'+h+'px;">'+
+      '<div style="position:absolute; top:100px; left:'+(w-32)/2+'px;"></div>'+
+    '</div></div>').get(0);
+  overlay.firstChild.firstChild.appendChild(imgs['loading']);
+
+  var imgPreloader = new Image();
+  imgPreloader.overlay = overlay;
+  imgPreloader.imglnk=this;
+  imgPreloader.onload=function(){
+    if( this.overlay.removed) return;
+
+    var photopopup = this.imglnk.marker.photo_showup.call(this.imglnk.marker, this.imglnk.photo, this.width, this.height, this.src);
+    $(this.overlay.firstChild.firstChild).hide();
+    $(photopopup).appendTo(this.overlay).fadeTo('slow',1);
+  };
+  imgPreloader.src = this.photo.api.smallurl(this.photo);
+
+  $(overlay).click(function(){
+    this.removed=true;
+    var fadeobj = overlay.firstChild;
+    if(overlay.childNodes.length>1) {
+      fadeobj = overlay.childNodes[1];
+    }
+    $(fadeobj).fadeTo('normal',0,function(){
+      this.parentNode.parentNode.removeChild(this.parentNode);
+    });
+  }).appendTo(document.body);
+};
+
+
+// FGS.Browser
+//   overwrite function
+//     updateviewCallback 
+//     ondragend
+//     clearPanel
+//     newMaker
+FGS.Browser=function() {
+  FGS.Browser.superclass.constructor.apply(this, arguments);
+  this.pageCurr = 1;
+  this.pageTotal = 1;
+  this.currZoom = 0;
+  this.lastcenter = null;
+  this.n_call = 0;
+  this.timestamp = 0;
+  this.currBounds = null;
+
+  GEvent.addListener(this, "dragend", this.ondragend);
+  GEvent.addListener(this, "zoomend", this.onzoomend);
+
+  var nowy = new Date().getFullYear();
+  var settingstr = '<span>'+msg_date+'<select id="fgs_select_year">';
+  for(var i = 0; i<10; ++i) {
+    settingstr += '<option value="'+(nowy-i)+'">'+(nowy-i)+'</option>';
+  }
+  settingstr += '</select> - <select id="fgs_select_month"><option value="all">All</option>';
+  for(var i = 1; i<=12; ++i) {
+    if(i < 10) settingstr += '<option value="0'+i+'">0'+i+'</option>';
+    else       settingstr += '<option value="'+i+'">'+i+'</option>';
+  }
+  settingstr += 
+    '</select><br />'+msg_sort+'<select id="fgs_select_sort">'+
+      '<option value="interestingness-desc">'+msg_interestingnessdesc+'</option>'+
+      '<option value="interestingness-asc">'+msg_interestingnessasc+'</option>'+
+      '<option value="date-taken-desc">'+msg_datetakendesc+'</option>'+
+      '<option value="date-taken-asc">'+msg_datetakenasc+'</option>'+
+      '<option value="date-posted-desc">'+msg_dateposteddesc+'</option>'+
+      '<option value="date-posted-asc">'+msg_datepostedasc+'</option>'+
+      '<option value="relevance">'+msg_relevance+'</option></select>';
+  settingstr += '<br />'+msg_search+'<form id="fgs_search_form"><input id="fgs_search" type="text"/><input type="submit"/></form></span>';
+  $(settingstr).appendTo(settingDiv);
+  var ysel = $('#fgs_select_year').get(0);
+  var msel = $('#fgs_select_month').get(0);
+  var ssel = $('#fgs_select_sort').get(0);
+  var sform = $('#fgs_search_form').get(0);
+  ysel.map = msel.map = ssel.map = sform.map = this;
+  ysel.onchange = msel.onchange = ssel.onchange = sform.onsubmit = this.changeSetting;
+
+  var upd = $cbtn('updown',msg_toggle, this.toggle, this);
+  var pre = $cbtn('prev',msg_prevpage, this.prevPage, this);
+  var nex = $cbtn('next',msg_nextpage, this.nextPage, this);
+  var pageInfo = $('<span/>').get(0);
+  $(pageDiv).append(upd).append(pre).append(nex).append(pageInfo);
+  pageDiv.pageInfo = pageInfo;
+  pre.map = nex.map = this;
+};
+$extend(FGS.Browser, GMap2);
+FGS.Browser.prototype.updateview = function(bound, currPage, level) {
+  if(level) {
+    this.currZoom = level;
+  }
+  if( this.currZoom < MIN_ZOOM || this.currZoom > MAX_ZOOM) {
+    return;
+  }
+  if(currPage) {
+    this.pageCurr = currPage;
+  } else {
+    this.pageCurr = 1;
+    this.pageTotal = 1;
+  }
+
+  this.updateviewCallback(bound);
+};
+FGS.Browser.prototype.changeSetting = function() {
+  this.map.updateview();
+  _IG_Analytics(_uacct, '/fgs/gadget/changeSetting');
+  return false;
+};
+FGS.Browser.prototype.prevPage = function() {
+  if( this.pageCurr <= 1) return;
+
+  this.updateview(null, this.pageCurr-1);
+};
+FGS.Browser.prototype.nextPage = function() {
+  if( this.pageCurr >= this.pageTotal) return;
+
+  this.updateview(null, this.pageCurr+1);
+};
+FGS.Browser.prototype.toggle = function() {
+  $(settingDiv).toggle();
+  onsize();
+};
+FGS.Browser.prototype.onzoomend = function(oldLevel,newLevel) {
+  this.updateview(null, null, newLevel);
+};
+FGS.Browser.prototype.refreshData = function(bound) {
+  var sw = bound.getSouthWest();
+  var ne = bound.getNorthEast();
+  var w = sw.lng();
+  var e = ne.lng();
+  var n = ne.lat();
+  var s = sw.lat();
+  var span = bound.toSpan();
+  var wid = span.lng();
+  var hig = span.lat();
+
+  w += wid/5;
+  if( w > 180) w -= 360;
+  e -= wid/5;
+  if( e <= -180) e += 360;
+
+  if( e < w) {
+    if( (180+e) > (180-w)) {
+      w = -180;
+    } else {
+      e = 180;
+    }
+  }
+  n-=hig/5;
+  s+=hig/5;
+
+  var year = $('#fgs_select_year').get(0).value;
+  var month = $('#fgs_select_month').get(0).value;
+  var sort = $('#fgs_select_sort').get(0).value;
+  var searchtxt = $('#fgs_search').get(0).value;
+
+  var max_date, min_date;
+  if(month == 'all') {
+    min_date = year+'-01-01'; max_date = year+'-12-31';
+  } else {
+    min_date = year+'-'+month+'-01'; max_date = year+'-'+month+'-31';
+  }
+
+  var points = [new GLatLng(n,e),new GLatLng(n,w),new GLatLng(s,w),new GLatLng(s,e),new GLatLng(n,e)];
+
+  this.n_call = 0;
+  this.timestamp = new Date().getTime();
+  if($.trim(searchtxt)) {
+    flickr.callapi({method: 'flickr.photos.search',  extras:'geo,date_taken,owner_name,icon_server', bbox:w+','+s+','+e+','+n, text:_trim(searchtxt), min_taken_date:min_date, max_taken_date:max_date, sort:sort, page:this.pageCurr, per_page:PER_PAGE}, this, this.search_callback, this.timestamp, [points, 2]);
+  } else {
+    flickr.callapi({method: 'flickr.photos.search',  extras:'geo,date_taken,owner_name,icon_server', bbox:w+','+s+','+e+','+n,                        min_taken_date:min_date, max_taken_date:max_date, sort:sort, page:this.pageCurr, per_page:PER_PAGE}, this, this.search_callback, this.timestamp, [points, 2]);
+  }
+
+  if( prefs.getBool('usepanoramio')) {
+    var psort = null;
+    var pset = null;
+    if(sort == 'interestingness-desc' || sort == 'interestingness-asc' || sort == 'relevance') {
+      psort = 'popularity';
+      pset = 'public';
+    } else {
+      psort = 'upload_date';
+      pset = 'full';
+    }
+    panoramio.callapi({from:(this.pageCurr-1)*PER_PAGE, to:this.pageCurr*PER_PAGE, order:psort, set:pset, minx:w, miny:s, maxx:e, maxy:n}, this, this.search_callback, this.timestamp, [points, 2]);
+  }
+};
+FGS.Browser.prototype.search_callback = function(api, photos, total, timestamp, params) {
+  if(timestamp != this.timestamp) return;
+
+  if(!photos) return;
+
+  var points = params[0];
+  var num_call = params[1];
+
+  try {
+    this.n_call++;
+    if(this.n_call==1) {
+      this.currBounds = [];
+      this.clearOverlays();
+      this.addOverlay(new GPolyline(points, '#0000FF', 1, .3));
+      this.total = 0;
+      this.start = 0;
+      this.end = 0;
+    }
+
+    var pp = total/PER_PAGE;
+    if( pp > this.pageTotal) this.pageTotal = pp;
+    this.total += total;
+
+    if( photos.length == 0)
+      this.start += total;
+    else
+      this.start += ((this.pageCurr-1)*PER_PAGE);
+
+    this.end += photos.length;
+    
+    var start = this.start+1;
+    var end = this.start + this.end;
+    if(start > end) start = end;
+
+    pageDiv.pageInfo.innerHTML = ' '+msg_currpage.replace('$1', start).replace('$2', end).replace('$3', this.total);
+    setTimeout('onsize()', 300);
+
+    for (var i=0,len=photos.length; i<len; i++) {
+      photos[i].api = api;
+    }
+    
+    this.update_photos(api, photos, points);
+  } finally {
+    this.onReceivedData();
+  }
+};
+FGS.Browser.prototype.update_photos = function(api, photos, points) {
+  var delta = deltas[this.currZoom];
+
+  var temp_bounds = this.currBounds;
+  for (var i=0,len=photos.length; i<len; i++) {
+    var photo = photos[i];
+    var lat = parseFloat(photo.latitude);
+    var lon = parseFloat(photo.longitude);
+    if(lat == 0 && lon == 0) { continue; }
+
+    var pos = new GLatLng(lat, lon);
+    var isMerged = false;
+    for (var j=0,len2=temp_bounds.length; j<len2; j++) {
+      var b = temp_bounds[j];
+      if( b.contains(pos)) {
+        isMerged = true;
+        b.photos.push(photo);
+        break;
+      }
+    }
+
+    if(!isMerged) {
+      var b = new GLatLngBounds(new GLatLng(pos.lat()-delta, pos.lng()-delta), new GLatLng(pos.lat()+delta, pos.lng()+delta));
+      b.photos=[];
+      b.photos.push(photo);
+      temp_bounds.push(b);
+    }
+  }
+
+  this.clearPanel();
+  //this.closeInfoWindow();
+
+  for (var i=0,len=temp_bounds.length; i<len ; i++) {
+    var b = temp_bounds[i];
+    if(b.photos.length == 0) { continue; }
+    if(b.maker) this.removeOverlay(b.maker);
+    b.maker = this.newMaker($icon(b.photos.length), b.photos, b);
+    this.addOverlay(b.maker);
+  }
+};
+})();
+
+//-- flickr gmap show common api --
+
+
+
+var mapDiv = $('#mapDiv').get(0);
+var controlDiv = $('#controlDiv').get(0);
+var pageDiv = $('#pageDiv').get(0);
+var settingDiv = $('#settingDiv').get(0);
+
+mapDiv.parentNode.style.overflow='visible';
+function onsize() {
+  if(settingDiv.style.display=='none') {
+    var d = 50;
+    if(controlDiv.clientHeight>50) d = controlDiv.clientHeight;
+    controlDiv.style.top = (document.body.clientHeight-d)+'px';
+  } else {
+    controlDiv.style.top = (document.body.clientHeight-controlDiv.clientHeight)+'px';
+  }
+
+  mapDiv.style.height = (document.body.clientHeight-50)+'px';
+  mapDiv.gmap.checkResize();
+};
+$(window).resize(onsize);
+
+
+
+
+(function() {
+
+// mask layer
+function mask(gmap) {
+  var p = document.body;
+  if(!mask.layer) {
+    mask.layer = $(
+      '<div class="mask" style="position:absolute; top:0px; left:0px; cursor:wait; display:none;">'+
+        '<div style="position:absolute; top:100px;">'+
+          '<img src="http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/pics/loading.gif"/>'+
+        '</div>'+
+      '</div>').appendTo(p).get(0);
+  }
+  $(mask.layer).width(p.clientWidth).height(p.clientHeight).show().children().css('left',(p.clientWidth-32)/2);
+};
+function unmask() {
+  $(mask.layer).hide();
+};
+
+
+
+
+
+function FBrowserGadget() {
+  FBrowserGadget.superclass.constructor.apply(this, arguments);
+};
+var ExtBrowser = FBrowserGadget;
+$extend(ExtBrowser, FGS.Browser);
+ExtBrowser.prototype.updateviewCallback = function(bound) {
+  mask(this);
+  if(!bound) {
+    bound = this.getBounds();
+  }
+  this.lastcenter = bound.getCenter();
+
+  prefs.set('lat', this.lastcenter.lat()+'');
+  prefs.set('lng', this.lastcenter.lng()+'');
+  prefs.set('zoom', this.currZoom+'');
+
+  this.refreshData(bound);
+};
+ExtBrowser.prototype.ondragend = function() {
+  var map = this;
+  var bound = this.getBounds();
+  var center = bound.getCenter();
+  var span   = bound.toSpan();
+
+  if(map.lastcenter) {
+    var deltaX  = Math.abs(center.lng() - map.lastcenter.lng());
+    var deltaY  = Math.abs(center.lat() - map.lastcenter.lat());
+    var boundsX = span.lng();
+    var boundsY = span.lat();
+    if ((deltaX < 0.3*boundsX) && (deltaY < 0.3*boundsY)) {
+      return;
+    }
+  }
+  map.updateview(bound);
+};
+ExtBrowser.prototype.clearPanel = function() {
+};
+ExtBrowser.prototype.newMaker = function(icon, photos, bound) {
+  return new FPhotoMarkerGadget(icon, photos, bound);
+};
+ExtBrowser.prototype.onReceivedData = function() {
+  unmask();
+};
+
+function FPhotoMarkerGadget() {
+  FPhotoMarkerGadget.superclass.constructor.apply(this, arguments);
+  this.popupCtx = null;
+};
+var ExtMarker = FPhotoMarkerGadget;
+$extend(ExtMarker, FGS.Marker);
+ExtMarker.prototype.infowin_open = function() {
+  this.openInfoWindow(this.infowin);
+};
+ExtMarker.prototype.photo_showup = function(photo, width, height, src) {
+  var w = width+20;
+  var lef = (document.body.clientWidth-w)/2;
+  if(lef < 0) lef=0;
+
+  var hei = (document.body.clientHeight-(height+100))/2;
+  if(hei < 0) hei=0;
+
+  var photoctx =
+    '<div class="popup" style="position:absolute; top:'+hei+'px; left:'+lef+'px; width:'+w+'px;">'+
+      '<div style="margin:10px;">'+
+        '<b style="display: block; margin-bottom: 4px;">'+photo.api.gettitle(photo)+'</b>'+
+        '<img style="margin-bottom:4px;" src="'+src+'"/><br />';
+  if(photo.api.hasbuddy)
+    photoctx += '<a style="float:right;" target="_blank" href="'+photo.api.ownerurl(photo)+'"/><img style="width:48px;height:48px;border:0px;" src="'+flickr.buddyurl(photo)+'"/></a>';
+  photoctx += 
+        '<i>'+msg_postby.replace('$1','<a target="_blank" href="'+photo.api.ownerurl(photo)+'"/>'+photo.api.owner(photo)+'</a>')+'</i><br />'+
+        '<i>'+msg_takenon.replace('$1', photo.api.date(photo))+'</i><br />'+
+        '<a target="_blank" href="'+photo.api.pageurl(photo)+'">'+msg_viewonsite.replace('$1',photo.api.name)+'</a>'+
+      '</div>'+
+    '</div>';
+  return $(photoctx).get(0);
+};
+ExtMarker.prototype.photolist_open = function() {
+  mapDiv.gmap.closeInfoWindow();
+  if(!this.popupCtx) {
+    var popup = $(
+      '<div id="popupall" style="position:absolute;background:white;left:10px;top:10px;border:solid 1px black;">'+
+        '<div style="height:20px; margin:3px;"></div>'+
+        '<div style="overflow:auto;width:95%"><div></div></div>'+
+      '</div>').get(0);
+    popup.onclose = function() {this.parentNode.removeChild(this);};
+    var titlePanel = popup.childNodes[0];
+    var photoContainer = popup.childNodes[1];
+    var photoPanel = photoContainer.firstChild;
+    var closebtn = $cbtn('close','Close',popup.onclose,popup);
+    $(closebtn).addClass('right');
+    titlePanel.appendChild(closebtn);
+
+    $(popup).width(document.body.clientWidth-20).height(document.body.clientHeight-20);
+    $(photoContainer).height(document.body.clientHeight-50);
+
+    for(var i = 0, len = this.photos.length; i < len; ++i) {
+      var photo = this.photos[i];
+      var img = $('<img/>').width(75).height(75).attr('alt',photo.api.gettitle(photo)).attr('src',photo.api.iconurl(photo)).addClass(photo.api.name).bind('click',this.onPhotoClick).get(0);
+      img.photo=photo;
+      img.marker=this;
+      photoPanel.appendChild(img);
+    }
+    this.popupCtx = popup;
+  }
+
+  document.body.appendChild(this.popupCtx);
+};
+
+
+
+FGS.init=function() {
+  var locale = _args()["lang"];
+  var centerMap = [];
+  centerMap["en"] = new GLatLng(37.7750, -122.4183);   // san francisco
+  centerMap["fr"] = new GLatLng(48.8565, 2.3509);      // paris
+  centerMap["de"] = new GLatLng(52.5238, 13.4119);     // berlin
+  centerMap["es"] = new GLatLng(40.4167, -3.7032);     // madrid
+  centerMap["it"] = new GLatLng(45.4637, 9.1881);      // milan
+  centerMap["nl"] = new GLatLng(52.3738, 4.8909);      // amsterdam
+  centerMap["ja"] = new GLatLng(35.6699, 139.7700);    // tokyo
+  centerMap["zh-TW"] = new GLatLng(25.0555,121.5374);    // taipei
+
+
+  var mapCenterLatLng = null;
+  
+  var lat = parseFloat(prefs.getString('lat'));
+  var lng = parseFloat(prefs.getString('lng'));
+  if ( lat && lng ) {
+    mapCenterLatLng = new GLatLng(lat, lng);
+  }
+
+  if(!mapCenterLatLng) {
+    mapCenterLatLng = centerMap["en"];
+    if ( centerMap[locale] ) {
+      mapCenterLatLng = centerMap[locale];
+    }
+  }
+
+  var zoom = parseInt(prefs.getString('zoom'));
+  var zoom = 12;
+  var gmap = new FBrowserGadget(mapDiv);
+  mapDiv.gmap = gmap;
+  gmap.addControl(new GSmallZoomControl());
+  gmap.addControl(new GMapTypeControl());
+  gmap.setCenter(mapCenterLatLng, zoom);
+  
+  _IG_Analytics(_uacct, '/fgs/gadget/init');
+};
+
+_IG_RegisterOnloadHandler(FGS.init);
+})();
+</script>
+</body>
+]]></Content>
+
+</Module>

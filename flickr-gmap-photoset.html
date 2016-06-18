@@ -214,7 +214,7 @@ PhotoGroupMarker.release=function(marker) {
 
   PhotoGroupMarker.instances[idx].push(marker);
 };
-$extend(PhotoGroupMarker, window.GMarker);
+$extend(PhotoGroupMarker, google.maps.Marker);
 PhotoGroupMarker.prototype.setPhotos=function(photos){
   this.photos = photos;
   this.infowin=null;
@@ -461,7 +461,7 @@ var BrowseMap=window.BrowseMap=function(container, opts){
 
   return;
 };
-$extend(BrowseMap, window.GMap2);
+$extend(BrowseMap, google.maps.Map);
 BrowseMap.prototype.updateOptionInfo=function(){
   this.options.info.innerHTML=this.pageCurr+' / '+this.pageTotal;
 };

@@ -555,7 +555,7 @@ BrowseMap.prototype.regroupphotos=function() {
   var photos=this.photos;
 
   if(!this.getCenter()) {
-    var totalbound = new window.GLatLngBounds();
+    var totalbound = new google.maps.LatLngBounds();
     for (var i=0,len=photos.length; i<len; i++) {
       var photo=photos[i];
       totalbound.extend(photo.pos);
@@ -614,7 +614,7 @@ BrowseMap.prototype.regroupphotos=function() {
     }
 
     if(!isMerged) {
-      var b = new window.GLatLngBounds(new google.maps.LatLng(pos.lat()-delta, pos.lng()-delta), new google.maps.LatLng(pos.lat()+delta, pos.lng()+delta));
+      var b = new google.maps.LatLngBounds(new google.maps.LatLng(pos.lat()-delta, pos.lng()-delta), new google.maps.LatLng(pos.lat()+delta, pos.lng()+delta));
       b.photos=[];
       b.photos.push(photo);
       b.firstdate=photo.datetaken;

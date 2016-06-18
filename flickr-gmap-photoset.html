@@ -170,20 +170,20 @@ PhotoGroupMarker.geticon=function(n) {
     var icon = new google.maps.MarkerImage();
     icon.url = imgs['icon1'].src;
     icon.size = new google.maps.Size(18, 19);
-    icon.anchor = new window.GPoint(9, 9);
-    icon.infoWindowAnchor = new window.GPoint(9, 9);
+    icon.anchor = new google.maps.Point(9, 9);
+    icon.infoWindowAnchor = new google.maps.Point(9, 9);
     PhotoGroupMarker.geticon.i1=icon;
     icon = new google.maps.MarkerImage();
     icon.url = imgs['icon2'].src;
     icon.size = new google.maps.Size(20, 21);
-    icon.anchor = new window.GPoint(10, 10);
-    icon.infoWindowAnchor = new window.GPoint(10, 10);
+    icon.anchor = new google.maps.Point(10, 10);
+    icon.infoWindowAnchor = new google.maps.Point(10, 10);
     PhotoGroupMarker.geticon.i2=icon;
     icon = new google.maps.MarkerImage();
     icon.url = imgs['icon3'].src;
     icon.size = new google.maps.Size(26, 27);
-    icon.anchor = new window.GPoint(13, 13);
-    icon.infoWindowAnchor = new window.GPoint(13, 13);
+    icon.anchor = new google.maps.Point(13, 13);
+    icon.infoWindowAnchor = new google.maps.Point(13, 13);
     PhotoGroupMarker.geticon.i3=icon;
   }
   if(n < 10) return PhotoGroupMarker.geticon.i1;

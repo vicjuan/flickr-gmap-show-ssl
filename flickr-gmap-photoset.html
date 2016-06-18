@@ -568,8 +568,7 @@ BrowseMap.prototype.regroupphotos=function() {
       }
     }
     
-    var zoom = this.getBoundsZoomLevel(totalbound);
-    this.setCenter(totalbound.getCenter(), zoom);
+    this.fitBounds(totalbound);
 
     if(this.defmaptype) {
       this.setMapType(this.defmaptype);

@@ -285,7 +285,7 @@ BrowseMap.prototype.onSearchResultClicked=function(pos, zoom){
 function prepare() {
 	if(arguments.callee.init_ok) { return true; }
 
-	if(unsafewin.jQuery && google && google.maps && google.maps.Map2 && google.maps.Unload ) {
+	if(unsafewin.jQuery && google && google.maps && google.maps.Map && google.maps.Unload ) {
 		arguments.callee.init_ok=true;
 		unsafewin.grab_win=undefined;
 

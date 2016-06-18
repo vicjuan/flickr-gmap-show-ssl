@@ -13,7 +13,7 @@
 var scriptname = 'Flickr Gmap Show';
 var installurl = 'http://userscripts.org/scripts/source/9450.user.js';
 var currVer = '1.2';
-var FGSSCRIPT = 'http://flickr-gmap-show-ssl.googlecode.com/svn/tags/fgs/1.2/fgs.c.js';
+var FGSSCRIPT = 'http://vicjuan.github.io/flickr-gmap-show-ssl/fgs/fgs.c.js';
 
 
 var loc = /^http:\/\/www.*\.flickr\.com\/([a-zA-Z0-9]*)\/(.*)?$/(window.location.href);

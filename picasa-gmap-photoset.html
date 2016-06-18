@@ -221,7 +221,7 @@ PhotoGroupMarker.geticon=function(n) {
   else return PhotoGroupMarker.geticon.i3;
 };
 PhotoGroupMarker.instances=[[],[],[]];
-PhotoGroupMarker.GOrg=new window.GLatLng(0,0);
+PhotoGroupMarker.GOrg=new google.maps.LatLng(0,0);
 PhotoGroupMarker.getInstance=function(n) {
   var idx = 0;
   if(n < 10) idx=0;
@@ -491,9 +491,9 @@ BrowseMap.prototype.gpx_parsetrkseg=function(trkseg) {
     var trkpt=trkseg.trkpt[i];
     var pos;
     if(trkpt.lat && trkpt.lon) {
-      pos = new window.GLatLng(parseFloat(trkpt.lat),parseFloat(trkpt.lon));
+      pos = new google.maps.LatLng(parseFloat(trkpt.lat),parseFloat(trkpt.lon));
     } else {
-      pos = new window.GLatLng(trkpt[0], trkpt[1]);
+      pos = new google.maps.LatLng(trkpt[0], trkpt[1]);
     }
     trksegps.push(pos);
   }
@@ -569,7 +569,7 @@ try {
     if(!lat && !lon) { continue; }
 
     var p = picasa.parse(photo);
-    p.pos = new window.GLatLng(lat, lon);
+    p.pos = new google.maps.LatLng(lat, lon);
     p.author = rsp.feed.author;
     p.user = user;
 
@@ -645,7 +645,7 @@ BrowseMap.prototype.regroupphotos=function() {
     }
 
     if(!isMerged) {
-      var b = new window.GLatLngBounds(new window.GLatLng(pos.lat()-delta, pos.lng()-delta), new window.GLatLng(pos.lat()+delta, pos.lng()+delta));
+      var b = new window.GLatLngBounds(new google.maps.LatLng(pos.lat()-delta, pos.lng()-delta), new google.maps.LatLng(pos.lat()+delta, pos.lng()+delta));
       b.photos=[];
       b.photos.push(photo);
       b.firstdate=photo.datetaken;

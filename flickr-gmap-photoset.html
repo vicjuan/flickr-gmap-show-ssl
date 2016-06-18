@@ -569,7 +569,7 @@ BrowseMap.prototype.regroupphotos=function() {
     }
     
     this.fitBounds(totalbound);
-
+    this.setCenter(totalbound.center);
     if(this.defmaptype) {
       this.setMapTypeId(this.defmaptype);
     }

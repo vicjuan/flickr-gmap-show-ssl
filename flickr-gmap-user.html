@@ -160,35 +160,35 @@ var PhotoGroupMarker=function(latlng,opts){
   this.div.marker=this;
   this.div.onclick = this.onclick;
 
-  this.iconsize = this.icon.size;
+  this.iconsize = this.getIcon().size;
   this.div.style.width =this.iconsize.width-2 +'px';
   this.div.style.height=this.iconsize.height-2+'px';
 };
-PhotoGroupMarker.getIcon=function(n) {
-  if(!PhotoGroupMarker.getIcon.init) {
-    PhotoGroupMarker.getIcon.init=true;
+PhotoGroupMarker.getIcons=function(n) {
+  if(!PhotoGroupMarker.getIcons.init) {
+    PhotoGroupMarker.getIcons.init=true;
     var icon = {
       url: imgs['icon1'].src,
       size: new google.maps.Size(18, 19),
       anchor: new google.maps.Point(9, 9)
     };
-    PhotoGroupMarker.getIcon.i1=icon;
+    PhotoGroupMarker.getIcons.i1=icon;
     icon = {
       url: imgs['icon2'].src,
       size: new google.maps.Size(20, 21),
       anchor: new google.maps.Point(10, 10)
     }
-    PhotoGroupMarker.getIcon.i2=icon;
+    PhotoGroupMarker.getIcons.i2=icon;
     icon = {
       url: imgs['icon3'].src,
       size: new google.maps.Size(26, 27),
       anchor: new google.maps.Point(13, 13)
     }
-    PhotoGroupMarker.getIcon.i3=icon;
+    PhotoGroupMarker.getIcons.i3=icon;
   }
-  if(n < 10) return PhotoGroupMarker.getIcon.i1;
-  else if(n < 100) return PhotoGroupMarker.getIcon.i2;
-  else return PhotoGroupMarker.getIcon.i3;
+  if(n < 10) return PhotoGroupMarker.getIcons.i1;
+  else if(n < 100) return PhotoGroupMarker.getIcons.i2;
+  else return PhotoGroupMarker.getIcons.i3;
 };
 PhotoGroupMarker.instances=[[],[],[]];
 PhotoGroupMarker.GOrg=new google.maps.LatLng(0,0);
@@ -199,7 +199,7 @@ PhotoGroupMarker.getInstance=function(n) {
   else idx=2;
 
   if(PhotoGroupMarker.instances[idx].length == 0) {
-    var marker = new PhotoGroupMarker(PhotoGroupMarker.GOrg, {icon:PhotoGroupMarker.getIcon(n)});
+    var marker = new PhotoGroupMarker(PhotoGroupMarker.GOrg, {icon:PhotoGroupMarker.getIcons(n)});
     marker.num = n;
     return marker;
   } else {

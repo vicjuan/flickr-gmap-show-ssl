@@ -344,7 +344,7 @@ function FPhotoMarker(icon, photos) {
     if( photos.length == 1) {
         position = new GLatLng(photos[0].latitude, photos[0].longitude);
     } else {
-        var bounds = new GLatLngBounds();
+        var bounds = google.maps.LatLngBounds();
         for(var i=0, len=photos.length; i<len; ++i) {
             bounds.extend(new GLatLng(photos[i].latitude, photos[i].longitude));
         }

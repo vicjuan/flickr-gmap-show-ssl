@@ -176,7 +176,7 @@ var PhotoMarker=function(latlng,opts){
   this.superconstructor.apply(this, arguments);
   this.photo=opts.photo;
   this.gmap=opts.gmap;
-  window.GEvent.addListener(this, 'click', this.onphotoclick);
+  google.maps.event.addListener(this, 'click', this.onphotoclick);
 };
 $extend(PhotoMarker, google.maps.Marker);
 PhotoMarker.prototype.onphotoclick=function(){

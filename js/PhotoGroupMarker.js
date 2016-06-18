@@ -112,7 +112,7 @@ PhotoGroupMarker.prototype.showInfoWindow=function(idx){
 	if(this.gmap.getInfoWindow().isHidden()) {
 		this.openInfoWindow(showpanel, {suppressMapPan:false});
 		var mapdiv = $showpanel.find('div.map').get(0);
-		var map = new google.maps.Map2(mapdiv);
+		var map = new google.maps.Map(mapdiv);
 		map.addControl(new google.maps.SmallZoomControl());
 		map.setCenter(photo.pos, photo.accuracy);
 		map.marker=new google.maps.Marker(photo.pos);

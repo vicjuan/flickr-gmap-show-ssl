@@ -694,7 +694,7 @@ function load() {
         if(paraValue) {
           switch(paraValue.toLowerCase()) {
             case 'normal': opt.defmaptype=G_NORMAL_MAP; break;
-            case 'satellite': opt.defmaptype=G_SATELLITE_MAP; break;
+            case 'satellite': opt.defmaptype=google.maps.MapTypeId.SATELLITE; break;
             case 'hybrid':  opt.defmaptype=G_HYBRID_MAP; break;
           }
         }

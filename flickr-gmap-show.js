@@ -613,8 +613,7 @@ try {
     }
     
     GEvent.addListener(this, "zoomend", this._onzoom);
-    var zoom = this.getBoundsZoomLevel(bounds);
-    this.setCenter(bounds.getCenter(), zoom, G_SATELLITE_MAP);
+    this.fitBounds(bounds);
 
     if( rsp.photoset.pages > parseInt(rsp.photoset.page)) {
         Utilities.maskMap(this);

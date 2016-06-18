@@ -154,7 +154,7 @@ callapi : function(methodname, args, obj, callback, params) {
 
 var PhotoGroupMarker=function(latlng,opts){
   this.superconstructor.apply(this, arguments);
-  window.GEvent.addListener(this, 'click', this.onclick);
+  google.maps.event.addListener(this, 'click', this.onclick);
   this.div=$('<div style="position:absolute; text-align:center; vertical-align:middle; font-size:small; cursor:pointer;"></div>').get(0);
 
   this.div.marker=this;
@@ -456,7 +456,7 @@ var BrowseMap=window.BrowseMap=function(container, opts){
     loadscript(path);
   }
 
-  window.GEvent.addListener(this, "zoomend", this.onzoomend);
+  google.maps.event.addListener(this, "zoomend", this.onzoomend);
   this.refreshView();
 
   return;

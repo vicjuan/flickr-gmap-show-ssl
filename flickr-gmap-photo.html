@@ -315,7 +315,7 @@ PhotoMap.prototype.loadlastlocation=function() {
 
   this.setCenter(center, zoom);
   if(this.marker) {
-    this.marker.setPoint(center);
+    this.marker.setPosition(center);
   }
 };
 PhotoMap.prototype.savelocation=function() {

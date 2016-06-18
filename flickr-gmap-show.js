@@ -387,7 +387,7 @@ FPhotoMarker.prototype.redraw = function(force) {
     var p = this.map_.fromLatLngToDivPixel(this.getPoint());
     var z = GOverlay.getZIndex(this.getPoint().lat());
     
-    var iconsize = this.getIcon().iconSize;
+    var iconsize = this.getIcon().size;
     this.div_.style.left = (p.x - iconsize.width/2) + "px";
     this.div_.style.top = (p.y - iconsize.height/2)+2 + "px";
     this.div_.style.width = iconsize.width-2 + "px";

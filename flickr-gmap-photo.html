@@ -168,7 +168,7 @@ function $photoicon(photo) {
     $photoicon.def=deficon;
   }
   var icon= new window.GIcon($photoicon.def);
-  icon.label = {url:flickr.iconurl(photo), anchor:new window.GLatLng(2,2), size:new window.GSize(75,75)};
+  icon.label = {url:flickr.iconurl(photo), anchor:new google.maps.LatLng(2,2), size:new window.GSize(75,75)};
   return icon;
 }
 
@@ -296,7 +296,7 @@ PhotoMap.prototype.photoinfo_callback=function(rsp){
 
   var isdraggable = false;
 
-  var center = new window.GLatLng(photo.location.latitude,photo.location.longitude);
+  var center = new google.maps.LatLng(photo.location.latitude,photo.location.longitude);
   var marker=this.marker=new PhotoMarker(center, {icon:$photoicon(photo), draggable:isdraggable, photo:photo, gmap:this});
 
   this.setCenter(center, zoom);
@@ -310,7 +310,7 @@ PhotoMap.prototype.searchresult_click=function() {
   this.win.savelocation_display();
 };
 PhotoMap.prototype.loadlastlocation=function() {
-  var center = new window.GLatLng(parseFloat(GM_getValue('last_lat', DEF_LAT)), parseFloat(GM_getValue('last_lng', DEF_LNG)));
+  var center = new google.maps.LatLng(parseFloat(GM_getValue('last_lat', DEF_LAT)), parseFloat(GM_getValue('last_lng', DEF_LNG)));
   var zoom = parseInt(GM_getValue('last_zoom', DEF_ZOOM));
 
   this.setCenter(center, zoom);

@@ -571,7 +571,7 @@ BrowseMap.prototype.regroupphotos=function() {
     this.fitBounds(totalbound);
 
     if(this.defmaptype) {
-      this.setMapType(this.defmaptype);
+      this.setMapTypeId(this.defmaptype);
     }
 
   }
@@ -691,9 +691,9 @@ function load() {
       if(paraName == 'maptype') {
         if(paraValue) {
           switch(paraValue.toLowerCase()) {
-            case 'normal': opt.defmaptype=G_NORMAL_MAP; break;
+            case 'normal': opt.defmaptype=google.maps.MapTypeId.ROADMAP; break;
             case 'satellite': opt.defmaptype=google.maps.MapTypeId.SATELLITE; break;
-            case 'hybrid':  opt.defmaptype=G_HYBRID_MAP; break;
+            case 'hybrid':  opt.defmaptype=google.maps.MapTypeId.HYBRID; break;
           }
         }
       }

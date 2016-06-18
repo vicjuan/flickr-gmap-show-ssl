@@ -14,8 +14,8 @@ function getMarkerIcon() {
         markerIcon = new GIcon();
         markerIcon.image = imgPosition;
         markerIcon.iconSize = new google.maps.Size(18, 19);
-        markerIcon.iconAnchor = new GPoint(9, 9);
-        markerIcon.infoWindowAnchor = new GPoint(9, 9);
+        markerIcon.iconAnchor = new google.maps.Point(9, 9);
+        markerIcon.infoWindowAnchor = new google.maps.Point(9, 9);
     }
     return markerIcon;
 }
@@ -552,8 +552,8 @@ FPhotoSet.prototype._onzoom = function() {
     Utilities.maskMap(this);
     this.clearOverlays();
 
-    var p1 = this.fromDivPixelToLatLng(new GPoint(0, 0)).lat();
-    var p2 = this.fromDivPixelToLatLng(new GPoint(0, 20)).lat();
+    var p1 = this.fromDivPixelToLatLng(new google.maps.Point(0, 0)).lat();
+    var p2 = this.fromDivPixelToLatLng(new google.maps.Point(0, 20)).lat();
     var delta = p1 - p2; 
 
     var temp_bounds = new Array();
@@ -774,8 +774,8 @@ FBrowser.prototype.setSearchParameter = function(params) {
 };
 FBrowser.prototype._ondrag = function() {
     var center = this.getCenter();
-    var p1 = this.fromDivPixelToLatLng(new GPoint(0, 0)).lat();
-    var p2 = this.fromDivPixelToLatLng(new GPoint(0, 60)).lat();
+    var p1 = this.fromDivPixelToLatLng(new google.maps.Point(0, 0)).lat();
+    var p2 = this.fromDivPixelToLatLng(new google.maps.Point(0, 60)).lat();
     var delta = (p1 - p2);
     if(Math.abs(center.lat()-this._lastcenter.lat())<delta && Math.abs(center.lng()-this._lastcenter.lng())<delta ) {
         return;
@@ -838,8 +838,8 @@ try {
 
     this._pagectrl._setPageNumber(rsp.photos.page, rsp.photos.pages);
 
-    var p1 = this.fromDivPixelToLatLng(new GPoint(0, 0)).lat();
-    var p2 = this.fromDivPixelToLatLng(new GPoint(0, 20)).lat();
+    var p1 = this.fromDivPixelToLatLng(new google.maps.Point(0, 0)).lat();
+    var p2 = this.fromDivPixelToLatLng(new google.maps.Point(0, 20)).lat();
     var delta = p1 - p2; 
 
     var temp_bounds = new Array();

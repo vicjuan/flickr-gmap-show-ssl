@@ -156,7 +156,7 @@ callapi : function(methodname, args, obj, callback, params) {
 
 function $photoicon(photo) {
   if(!$photoicon.def) {
-    var deficon = new google.maps.Icon();
+    var deficon = new google.maps.MarkerImage();
     deficon.url = imgs['marker_img'].src;
     deficon.shadow = imgs['marker_shw'].src;
     deficon.size = new window.GSize(79, 89);
@@ -167,7 +167,7 @@ function $photoicon(photo) {
     deficon.transparent=imgs['marker_trans'].src;
     $photoicon.def=deficon;
   }
-  var icon= new google.maps.Icon($photoicon.def);
+  var icon= new google.maps.MarkerImage($photoicon.def);
   icon.label = {url:flickr.iconurl(photo), anchor:new google.maps.LatLng(2,2), size:new window.GSize(75,75)};
   return icon;
 }

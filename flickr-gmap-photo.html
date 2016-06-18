@@ -297,10 +297,9 @@ PhotoMap.prototype.photoinfo_callback=function(rsp){
   var isdraggable = false;
 
   var center = new google.maps.LatLng(photo.location.latitude,photo.location.longitude);
-  var marker=this.marker=new PhotoMarker(center, {icon:$photoicon(photo), draggable:isdraggable, photo:photo, gmap:this});
+  var marker=this.marker=new PhotoMarker(center, {icon:$photoicon(photo), draggable:isdraggable, photo:photo, map:this});
 
   this.setCenter(center, zoom);
-  this.addOverlay(marker);
 
   if(this.defmaptype) {
     this.setMapTypeId(this.defmaptype);

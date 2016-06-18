@@ -1998,8 +1998,7 @@ PhotoSetMap.prototype.regroupphotos=function(){
 			if(!photo.pos) continue;
 			totalbound.extend(photo.pos);
 		}
-		var zoom = this.getBoundsZoomLevel(totalbound);
-		this.setCenter(totalbound.getCenter(), zoom);
+		this.fitBounds(totalbound);
 		return;
 	}
 

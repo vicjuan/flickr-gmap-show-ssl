@@ -23,7 +23,7 @@ if(loc&&loc[1]&&loc[2]) {
             
             var a = document.createElement('a');
             a.innerHTML='GMap';
-            a.href='http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/flickr-gmap-photoset.html?photoset_id='+loc[2];
+            a.href='http://vicjuan.github.io/flickr-gmap-show-ssl/flickr-gmap-photoset.html?photoset_id='+loc[2];
             nobr.appendChild(img.cloneNode(true));
             nobr.appendChild(a);
         }

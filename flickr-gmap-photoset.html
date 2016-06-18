@@ -640,7 +640,7 @@ BrowseMap.prototype.regroupphotos=function() {
     b.maker = PhotoGroupMarker.getInstance(b.photos.length);
     b.maker.setPhotos(b.photos);
     b.maker.setPosition(center);
-    this.addOverlay(b.maker);
+    b.maker.setMap(this);
   }
 };
 BrowseMap.prototype.prevPage=function(){

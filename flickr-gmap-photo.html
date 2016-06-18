@@ -156,18 +156,18 @@ callapi : function(methodname, args, obj, callback, params) {
 
 function $photoicon(photo) {
   if(!$photoicon.def) {
-    var deficon = new window.GIcon();
-    deficon.image = imgs['marker_img'].src;
+    var deficon = new google.maps.Icon();
+    deficon.url = imgs['marker_img'].src;
     deficon.shadow = imgs['marker_shw'].src;
-    deficon.iconSize = new window.GSize(79, 89);
+    deficon.size = new window.GSize(79, 89);
     deficon.shadowSize = new window.GSize(109, 89);
-    deficon.iconAnchor = new window.GPoint(40, 89);
+    deficon.anchor = new window.GPoint(40, 89);
     deficon.infoWindowAnchor = new window.GPoint(40, 89);
     deficon.imageMap=[0,0,78,0,78,78,49,78,39,88,39,78,0,78];
     deficon.transparent=imgs['marker_trans'].src;
     $photoicon.def=deficon;
   }
-  var icon= new window.GIcon($photoicon.def);
+  var icon= new google.maps.Icon($photoicon.def);
   icon.label = {url:flickr.iconurl(photo), anchor:new google.maps.LatLng(2,2), size:new window.GSize(75,75)};
   return icon;
 }

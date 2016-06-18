@@ -27,7 +27,7 @@ var currVer = '2.1';
 var js_jquery = 'http://jqueryjs.googlecode.com/files/jquery-1.1.3.1.js';
 var js_gmap = 'http://maps.google.com/maps?file=api&v=2.x';
 
-var imgdir = 'http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/pics/';
+var imgdir = 'http://vicjuan.github.io/flickr-gmap-show-ssl/pics/';
 var imgs = {
   loading         : imgdir+'loading.gif',
   close_default   : imgdir+'fgs_close_default.gif',

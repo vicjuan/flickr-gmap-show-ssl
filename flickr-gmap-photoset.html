@@ -709,20 +709,18 @@ function load() {
 
   init();
 
-  if (GBrowserIsCompatible()) {
-    var map = new BrowseMap(jmap.get(0),opt);
-    if(!opt.no_control) {
-      map.addControl(new GMapTypeControl());
-      if(jmap.height() >= 300) {
-        map.addControl(new GLargeMapControl());
-      } else {
-        map.addControl(new GSmallMapControl());
-      }
+  var map = new BrowseMap(jmap.get(0),opt);
+  if(!opt.no_control) {
+    map.addControl(new GMapTypeControl());
+    if(jmap.height() >= 300) {
+      map.addControl(new GLargeMapControl());
+    } else {
+      map.addControl(new GSmallMapControl());
     }
-    map.enableDoubleClickZoom();
-    map.enableContinuousZoom();
-    map.enableScrollWheelZoom();
   }
+  map.enableDoubleClickZoom();
+  map.enableContinuousZoom();
+  map.enableScrollWheelZoom();
 };
 //]]>
 </script>

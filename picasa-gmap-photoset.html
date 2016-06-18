@@ -750,26 +750,16 @@ function load() {
 
   init();
 
-  if (GBrowserIsCompatible()) {
-    var map = new BrowseMap(jmap.get(0),opt);
-    if(!no_control) {
-      map.addControl(new GMapTypeControl());
-      if(jmap.height() >= 300) {
-        map.addControl(new GLargeMapControl());
-      } else {
-        map.addControl(new GSmallMapControl());
-      }
-    }
-    map.enableDoubleClickZoom();
-    map.enableContinuousZoom();
-    map.enableScrollWheelZoom();
+  var map = new BrowseMap(jmap.get(0),opt);
+  map.enableDoubleClickZoom();
+  map.enableContinuousZoom();
+  map.enableScrollWheelZoom();
     
-    if(maptype) {
-      switch(maptype.toLowerCase()) {
-      case 'normal': map.defmaptype=G_NORMAL_MAP; break;
-      case 'satellite': map.defmaptype=G_SATELLITE_MAP; break;
-      case 'hybrid':  map.defmaptype=G_HYBRID_MAP; break;
-      }
+  if(maptype) {
+    switch(maptype.toLowerCase()) {
+    case 'normal': map.defmaptype=G_NORMAL_MAP; break;
+    case 'satellite': map.defmaptype=G_SATELLITE_MAP; break;
+    case 'hybrid':  map.defmaptype=G_HYBRID_MAP; break;
     }
   }
 };

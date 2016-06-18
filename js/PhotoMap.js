@@ -12,7 +12,7 @@ var PhotoMap=function(container, opts){
 
 	this.loadLocation();
 };
-extend(PhotoMap, google.maps.Map2);
+extend(PhotoMap, google.maps.Map);
 PhotoMap.prototype.flickr_photos_getInfo_onLoad=function(success, responseXML, responseText, params){
 try {
 	var rsp = eval('(' + responseText + ')');

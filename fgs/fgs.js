@@ -13,7 +13,7 @@ var imgPos = ['http://l.yimg.com/www.flickr.com/images/dot1_p.png', 'http://l.yi
 var shwPos = ['', '', 'http://labs.google.com/ridefinder/images/mm_20_shadow.png'];
 
 var imgs = {
-    loading : 'http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/lightbox/images/loading.gif',
+    loading : 'http://vicjuan.github.io/flickr-gmap-show-ssl/lightbox/images/loading.gif',
 
     map_default  : 'data:image/gif;base64,R0lGODdhCgAMAIgAAP///4CAgCwAAAAACgAMAAACF4SPF7vY9p6CIalqQWTUYalh4eU1YgYUADs=',
     map_hover    : 'data:image/gif;base64,R0lGODdhCgAMAIgAAP///wAA/ywAAAAACgAMAAACF4SPF7vY9p6CIalqQWTUYalh4eU1YgYUADs=',
@@ -1226,7 +1226,7 @@ var FGS = {
 
 
     init : function() {
-        loadjs('http://flickr-gmap-show-ssl.googlecode.com/svn/tags/fgs/current/gmap.js');
+        loadjs('http://vicjuan.github.io/flickr-gmap-show-ssl/fgs/gmap.js');
 
         FGS._processFlickrPage();
 

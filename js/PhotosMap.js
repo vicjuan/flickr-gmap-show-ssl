@@ -9,7 +9,7 @@ var PhotosMap=function(container, opts){
 	var mt=this.getMapTypes();
 	for(var i=0; i<mt.length; i++) { mt[i].getMinimumResolution=this.getMinimumResolution; }
 };
-extend(PhotosMap, google.maps.Map2);
+extend(PhotosMap, google.maps.Map);
 PhotosMap.prototype.getMinimumResolution=function() { return 3; };
 PhotosMap.prototype.deltas = [
 0,0,

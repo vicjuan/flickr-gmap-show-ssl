@@ -47,7 +47,7 @@ try {
     res = res.replace(/{/g,'(').replace(/}/g,')').replace(/\[/g,'$').replace(/\]/g,';');
   }
 
-  var loc = 'http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/flickr-gmap-photoset.html?photoset_id='+form.photoset_id.value;
+  var loc = 'http://vicjuan.github.io/flickr-gmap-show-ssl/flickr-gmap-photoset.html?photoset_id='+form.photoset_id.value;
   //var loc = 'http://viking.wctang.info/show/flickr-gmap-photoset.html?photoset_id='+form.photoset_id.value;
   if(form.no_control.checked) {
     loc += '&no_control=1';
@@ -71,7 +71,7 @@ try {
 <form onsubmit="return submitform(this);">
     photoset_id: <input name="photoset_id" type="text" value="72157600408114274"/><br />
     no map control:<input type="checkbox" name="no_control"/><br />
-    gpxurl:<input name="gpxurl" type="text" size="120" value="http://flickr-gmap-show-ssl.googlecode.com/svn/trunk/gpx-sample.gpx"/><br />
+    gpxurl:<input name="gpxurl" type="text" size="120" value="http://vicjuan.github.io/flickr-gmap-show-ssl/gpx-sample.gpx"/><br />
     gpx:<br /><textarea name="gpx" cols="120" rows="30">
 <gpx
    version="1.1"

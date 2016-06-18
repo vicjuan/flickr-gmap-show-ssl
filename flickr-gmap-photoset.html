@@ -191,7 +191,7 @@ PhotoGroupMarker.geticon=function(n) {
   else return PhotoGroupMarker.geticon.i3;
 };
 PhotoGroupMarker.instances=[[],[],[]];
-PhotoGroupMarker.GOrg=new window.GLatLng(0,0);
+PhotoGroupMarker.GOrg=new google.maps.LatLng(0,0);
 PhotoGroupMarker.getInstance=function(n) {
   var idx = 0;
   if(n < 10) idx=0;
@@ -474,9 +474,9 @@ BrowseMap.prototype.gpx_parsetrkseg=function(trkseg) {
     var trkpt=trkseg.trkpt[i];
     var pos;
     if(trkpt.lat && trkpt.lon) {
-      pos = new window.GLatLng(parseFloat(trkpt.lat),parseFloat(trkpt.lon));
+      pos = new google.maps.LatLng(parseFloat(trkpt.lat),parseFloat(trkpt.lon));
     } else {
-      pos = new window.GLatLng(trkpt[0], trkpt[1]);
+      pos = new google.maps.LatLng(trkpt[0], trkpt[1]);
     }
     trksegps.push(pos);
   }
@@ -543,7 +543,7 @@ try {
     var lon=parseFloat(photo.longitude);
     if(!lat && !lon) { continue; }
 
-    var p = {id:photo.id,secret:photo.secret,title:photo.title,pos:new window.GLatLng(lat, lon),api:flickr,datetaken:photo.datetaken,owner:photo.owner||photoset.owner,ownername:photo.ownername||photoset.owner,farm:photo.farm,server:photo.server,iconfarm:photo.iconfarm,iconserver:photo.iconserver};
+    var p = {id:photo.id,secret:photo.secret,title:photo.title,pos:new google.maps.LatLng(lat, lon),api:flickr,datetaken:photo.datetaken,owner:photo.owner||photoset.owner,ownername:photo.ownername||photoset.owner,farm:photo.farm,server:photo.server,iconfarm:photo.iconfarm,iconserver:photo.iconserver};
     this.photos.push(p);
   }
   
@@ -613,7 +613,7 @@ BrowseMap.prototype.regroupphotos=function() {
     }
 
     if(!isMerged) {
-      var b = new window.GLatLngBounds(new window.GLatLng(pos.lat()-delta, pos.lng()-delta), new window.GLatLng(pos.lat()+delta, pos.lng()+delta));
+      var b = new window.GLatLngBounds(new google.maps.LatLng(pos.lat()-delta, pos.lng()-delta), new google.maps.LatLng(pos.lat()+delta, pos.lng()+delta));
       b.photos=[];
       b.photos.push(photo);
       b.firstdate=photo.datetaken;

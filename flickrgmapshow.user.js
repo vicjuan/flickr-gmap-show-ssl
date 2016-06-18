@@ -735,7 +735,7 @@ var PhotoMap=function(container, opts){
 
 	this.loadLocation();
 };
-extend(PhotoMap, google.maps.Map2);
+extend(PhotoMap, google.maps.Map);
 PhotoMap.prototype.flickr_photos_getInfo_onLoad=function(success, responseXML, responseText, params){
 try {
 	var rsp = eval('(' + responseText + ')');
@@ -1019,7 +1019,7 @@ PhotoGroupMarker.prototype.showInfoWindow=function(idx){
 	if(this.gmap.getInfoWindow().isHidden()) {
 		this.openInfoWindow(showpanel, {suppressMapPan:false});
 		var mapdiv = $showpanel.find('div.map').get(0);
-		var map = new google.maps.Map2(mapdiv);
+		var map = new google.maps.Map(mapdiv);
 		map.addControl(new google.maps.SmallZoomControl());
 		map.setCenter(photo.pos, photo.accuracy);
 		map.marker=new google.maps.Marker(photo.pos);
@@ -1847,7 +1847,7 @@ var PhotosMap=function(container, opts){
 	var mt=this.getMapTypes();
 	for(var i=0; i<mt.length; i++) { mt[i].getMinimumResolution=this.getMinimumResolution; }
 };
-extend(PhotosMap, google.maps.Map2);
+extend(PhotosMap, google.maps.Map);
 PhotosMap.prototype.getMinimumResolution=function() { return 3; };
 PhotosMap.prototype.deltas = [
 0,0,
@@ -2263,7 +2263,7 @@ try {
 function prepare() {
 	if(arguments.callee.init_ok) { return true; }
 
-	if(unsafewin.jQuery && google && google.maps && google.maps.Map2 && google.maps.Unload ) {
+	if(unsafewin.jQuery && google && google.maps && google.maps.Map && google.maps.Unload ) {
 		arguments.callee.init_ok=true;
 		unsafewin.grab_win=undefined;
 

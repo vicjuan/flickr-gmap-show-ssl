@@ -13,7 +13,7 @@ function getMarkerIcon() {
     if(markerIcon == null) {
         markerIcon = new GIcon();
         markerIcon.image = imgPosition;
-        markerIcon.iconSize = new GSize(18, 19);
+        markerIcon.iconSize = new google.maps.Size(18, 19);
         markerIcon.iconAnchor = new GPoint(9, 9);
         markerIcon.infoWindowAnchor = new GPoint(9, 9);
     }
@@ -688,7 +688,7 @@ FPageControl.prototype.initialize = function(map) {
     return this._ctrl;
 };
 FPageControl.prototype.getDefaultPosition = function() {
-    return new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new GSize(10, 25));
+    return new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new google.maps.Size(10, 25));
 };
 FPageControl.prototype._setStyle = function(elem) {
     elem.style.color = "#0000cc";

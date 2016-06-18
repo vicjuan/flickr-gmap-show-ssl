@@ -159,8 +159,8 @@ function $photoicon(photo) {
     var deficon = new google.maps.MarkerImage();
     deficon.url = imgs['marker_img'].src;
     deficon.shadow = imgs['marker_shw'].src;
-    deficon.size = new window.GSize(79, 89);
-    deficon.shadowSize = new window.GSize(109, 89);
+    deficon.size = new google.maps.Size(79, 89);
+    deficon.shadowSize = new google.maps.Size(109, 89);
     deficon.anchor = new window.GPoint(40, 89);
     deficon.infoWindowAnchor = new window.GPoint(40, 89);
     deficon.imageMap=[0,0,78,0,78,78,49,78,39,88,39,78,0,78];
@@ -168,7 +168,7 @@ function $photoicon(photo) {
     $photoicon.def=deficon;
   }
   var icon= new google.maps.MarkerImage($photoicon.def);
-  icon.label = {url:flickr.iconurl(photo), anchor:new google.maps.LatLng(2,2), size:new window.GSize(75,75)};
+  icon.label = {url:flickr.iconurl(photo), anchor:new google.maps.LatLng(2,2), size:new google.maps.Size(75,75)};
   return icon;
 }
 

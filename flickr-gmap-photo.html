@@ -178,7 +178,7 @@ var PhotoMarker=function(latlng,opts){
   this.gmap=opts.gmap;
   window.GEvent.addListener(this, 'click', this.onphotoclick);
 };
-$extend(PhotoMarker, window.GMarker);
+$extend(PhotoMarker, google.maps.Marker);
 PhotoMarker.prototype.onphotoclick=function(){
   var overlay = $(
     '<div><div class="screenmask" style="width:100%; height:100%">'+
@@ -271,7 +271,7 @@ var PhotoMap=window.PhotoMap=function(container, opts){
 
   flickr.callapi('flickr.photos.getInfo', {photo_id:this.photo_id}, this, this.photoinfo_callback);
 };
-$extend(PhotoMap, window.GMap2);
+$extend(PhotoMap, google.maps.Map);
 PhotoMap.prototype.photoinfo_callback=function(rsp){
   if(!rsp || rsp.stat != 'ok') return;
 

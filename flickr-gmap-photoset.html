@@ -593,7 +593,8 @@ BrowseMap.prototype.regroupphotos=function() {
     }
   }
 
-  var delta=deltas[this.getZoom()];
+  var zoom = this.getZoom() ? this.getZoom() : 0;
+  var delta=deltas[zoom];
   
   var temp_bounds=this.temp_bounds=[];
   for (var i=0,len=photos.length; i<len; i++) {

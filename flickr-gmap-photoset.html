@@ -168,23 +168,23 @@ var PhotoGroupMarker=function(latlng,opts){
 PhotoGroupMarker.getIcons=function(n) {
   if(!PhotoGroupMarker.getIcons.init) {
     PhotoGroupMarker.getIcons.init=true;
-    var icon = new google.maps.Icon({
+    var icon = {
       url: imgs['icon1'].src,
       size: new google.maps.Size(18, 19),
       anchor: new google.maps.Point(9, 9)
-    });
+    };
     PhotoGroupMarker.getIcons.i1=icon;
-    icon = new google.maps.Icon({
+    icon = {
       url: imgs['icon2'].src,
       size: new google.maps.Size(20, 21),
       anchor: new google.maps.Point(10, 10)
-    });
+    };
     PhotoGroupMarker.getIcons.i2=icon;
-    icon = new google.maps.Icon({
+    icon = {
       url: imgs['icon3'].src,
       size: new google.maps.Size(26, 27),
       anchor: new google.maps.Point(13, 13)
-    });
+    };
     PhotoGroupMarker.getIcons.i3=icon;
   }
   if(n < 10) return PhotoGroupMarker.getIcons.i1;

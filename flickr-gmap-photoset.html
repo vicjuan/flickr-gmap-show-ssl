@@ -284,7 +284,7 @@ PhotoGroupMarker.prototype.onclick=function(){
   }
   this.refreshImglist(0);
   new google.maps.InfoWindow({
-    content: infoWindow
+    content: this.infoWindow
   }).open(this.map, this);
 };
 PhotoGroupMarker.prototype.previmg=function() {

@@ -283,7 +283,9 @@ PhotoGroupMarker.prototype.onclick=function(){
     this.infoWindow.imags=imags.childNodes;
   }
   this.refreshImglist(0);
-  (this.infoWindow).open(this.map, this);
+  new google.maps.InfoWindow({
+    content: infoWindow
+  }).open(this.map, this);
 };
 PhotoGroupMarker.prototype.previmg=function() {
   if( this.marker.currpos <= 0) return;

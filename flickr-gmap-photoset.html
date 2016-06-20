@@ -218,7 +218,7 @@ PhotoGroupMarker.release=function(marker) {
 $extend(PhotoGroupMarker, google.maps.Marker);
 PhotoGroupMarker.prototype.setPhotos=function(photos){
   this.photos = photos;
-  this.infowin=null;
+  this.infoWindow=null;
   this.currpos=0;
   this.div.innerHTML=this.photos.length;
 };
@@ -243,7 +243,7 @@ PhotoGroupMarker.prototype.remove=function(){
   this.superprototype.remove.apply(this,arguments);
   this.div.parentNode.removeChild(this.div);
   this.photos=null;
-  this.infowin=null;
+  this.infoWindow=null;
   this.currpos=0;
   this.gmap=null;
   PhotoGroupMarker.release(this);
@@ -251,16 +251,16 @@ PhotoGroupMarker.prototype.remove=function(){
 PhotoGroupMarker.prototype.onclick=function(){
   if(this.marker) return arguments.callee.apply(this.marker,arguments);
 
-  if(!this.infowin) {
-    var infowin=this.infowin= $(
+  if(!this.infoWindow) {
+    var infoWindow=this.infoWindow= $(
       '<div class="fgs_photo_panel">'+
         '<div style="height:40px;text-align:center;"></div>'+
         '<div style="height:85px;" class="photos"></div>'+
         '<div style="height:20px;"></div>'+
       '</div>').get(0);
-    infowin.titl = infowin.childNodes[0];
-    var imags = infowin.childNodes[1];
-    var ctrl = infowin.childNodes[2];
+    infoWindow.titl = infoWindow.childNodes[0];
+    var imags = infoWindow.childNodes[1];
+    var ctrl = infoWindow.childNodes[2];
 
     var pre = $cbtn('prev','Previous Photo', this.previmg);
     var nex = $cbtn('next','Next Photo', this.nextimg);
@@ -270,7 +270,7 @@ PhotoGroupMarker.prototype.onclick=function(){
 
     var info = $('<span></span>').get(0);
     ctrl.appendChild(info);
-    infowin.info = info;
+    infoWindow.info = info;
 
     var cssprop = {position:'absolute', display:'none'};
     for(var i = 0, len = this.photos.length; i < len; ++i) {
@@ -280,10 +280,10 @@ PhotoGroupMarker.prototype.onclick=function(){
       img.marker=this;
       imags.appendChild(img);
     }
-    this.infowin.imags=imags.childNodes;
+    this.infoWindow.imags=imags.childNodes;
   }
   this.refreshImglist(0);
-  this.openInfoWindow(this.infowin, {suppressMapPan:true});
+  this.openinfoWindowdow(this.infoWindow, {suppressMapPan:true});
 };
 PhotoGroupMarker.prototype.previmg=function() {
   if( this.marker.currpos <= 0) return;
@@ -291,12 +291,12 @@ PhotoGroupMarker.prototype.previmg=function() {
   this.marker.refreshImglist(-1);
 };
 PhotoGroupMarker.prototype.nextimg=function() {
-  if(this.marker.currpos >= this.marker.infowin.imags.length-1) return;
+  if(this.marker.currpos >= this.marker.infoWindow.imags.length-1) return;
   this.marker.currpos++;
   this.marker.refreshImglist(1);
 };
 PhotoGroupMarker.prototype.refreshImglist=function(dir){
-  var imags = this.infowin.imags;
+  var imags = this.infoWindow.imags;
 
   var end = this.currpos + 5;
   if( end > imags.length) end = imags.length;
@@ -344,8 +344,8 @@ PhotoGroupMarker.prototype.refreshImglist=function(dir){
     }
   }
 
-  this.infowin.titl.innerHTML=imags[this.currpos].alt;
-  this.infowin.info.innerHTML=' ' + (this.currpos+1) + ' of ' + imags.length + ' ';
+  this.infoWindow.titl.innerHTML=imags[this.currpos].alt;
+  this.infoWindow.info.innerHTML=' ' + (this.currpos+1) + ' of ' + imags.length + ' ';
 };
 PhotoGroupMarker.prototype.onphotoclick=function(){
   var overlay = $(

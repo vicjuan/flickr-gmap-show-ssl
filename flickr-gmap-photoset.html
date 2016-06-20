@@ -221,6 +221,7 @@ PhotoGroupMarker.prototype.setPhotos=function(photos){
   this.infoWindow=null;
   this.currpos=0;
   this.div.innerHTML=this.photos.length;
+  this.infoWindowOpen=false;
 };
 PhotoGroupMarker.prototype.initialize=function(map){
   this.superprototype.initialize.apply(this,arguments);
@@ -246,10 +247,12 @@ PhotoGroupMarker.prototype.remove=function(){
   this.infoWindow=null;
   this.currpos=0;
   this.gmap=null;
+  this.infoWindowOpen=false;
   PhotoGroupMarker.release(this);
 };
 PhotoGroupMarker.prototype.onclick=function(){
   if(this.marker) return arguments.callee.apply(this.marker,arguments);
+  if(this.infoWindowOpen) return;
 
   if(!this.infoWindow) {
     var infoWindow=this.infoWindow= $(
@@ -283,10 +286,16 @@ PhotoGroupMarker.prototype.onclick=function(){
     this.infoWindow.imags=imags.childNodes;
   }
   this.refreshImglist(0);
-  new google.maps.InfoWindow({
+  var window = new google.maps.InfoWindow({
     content: this.infoWindow
-  }).open(this.map, this);
+  });
+  window.open(this.map, this);
+  this.infoWindowOpen=true;
+  google.maps.event.addListener(window, 'closeclick', this.onCloseInfoWindow);
 };
+PhotoGroupMarker.prototype.onCloseInfoWindow=function(){
+  this.infoWindowOpen=false;
+}
 PhotoGroupMarker.prototype.previmg=function() {
   if( this.marker.currpos <= 0) return;
   this.marker.currpos--;

@@ -49,7 +49,8 @@ var deltas = [0,0,
 0.0003957279865313504,
 0.0001978462849822430,
 0.0000989186817588934,
-0.0000494593408794467];
+0.0000494593408794467,
+0];
 
 function $extend(subc,basec) {
   var inh=function(){}; inh.prototype=basec.prototype; subc.prototype=new inh(); subc.prototype.constructor=subc; 
@@ -593,8 +594,7 @@ BrowseMap.prototype.regroupphotos=function() {
     }
   }
 
-  var zoom = this.getZoom() ? this.getZoom() : 0;
-  var delta=deltas[zoom];
+  var delta=deltas[this.getZoom()];
   
   var temp_bounds=this.temp_bounds=[];
   for (var i=0,len=photos.length; i<len; i++) {

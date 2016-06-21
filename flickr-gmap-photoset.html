@@ -153,7 +153,7 @@ callapi : function(methodname, args, obj, callback, params) {
 
 
 
-var PhotoGroupMarker=function(latlng,opts){
+var PhotoGroupMarker=function(opts){
   this.superconstructor.apply(this, arguments);
   google.maps.event.addListener(this, 'click', this.onclick);
   this.div=$('<div style="position:absolute; text-align:center; vertical-align:middle; font-size:small; cursor:pointer;"></div>').get(0);
@@ -161,7 +161,7 @@ var PhotoGroupMarker=function(latlng,opts){
   this.div.marker=this;
   this.div.onclick = this.onclick;
 
-  this.iconsize = opts.icon.size;
+  this.iconsize = this.icon.size;
   this.div.style.width =this.iconsize.width-2 +'px';
   this.div.style.height=this.iconsize.height-2+'px';
 };
@@ -200,7 +200,10 @@ PhotoGroupMarker.getInstance=function(n) {
   else idx=2;
 
   if(PhotoGroupMarker.instances[idx].length == 0) {
-    var marker = new PhotoGroupMarker(PhotoGroupMarker.GOrg, {icon:PhotoGroupMarker.getIcons(n)});
+    var marker = new PhotoGroupMarker({
+        position: PhotoGroupMarker.GOrg,
+        icon: PhotoGroupMarker.getIcons(n)
+    });
     marker.num = n;
     return marker;
   } else {

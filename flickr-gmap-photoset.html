@@ -468,7 +468,7 @@ var BrowseMap=window.BrowseMap=function(container, opts){
     loadscript(path);
   }
 
-  google.maps.event.addListener(this, "zoomend", this.onzoomend);
+  google.maps.event.addListener(this, "zoom_changed", this.onzoomend);
   this.refreshView();
 
   return;
@@ -600,7 +600,7 @@ BrowseMap.prototype.regroupphotos=function() {
   } else {
     if(this.temp_bounds && this.temp_bounds.length) {
       for (var i=0,len=this.temp_bounds.length; i<len ; i++) {
-        this.removeOverlay(this.temp_bounds[i].maker);
+        this.temp_bounds[i].maker.setMap(null);
       }
     }
   }

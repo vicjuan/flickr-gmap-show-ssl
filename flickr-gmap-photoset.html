@@ -302,7 +302,7 @@ PhotoGroupMarker.prototype.previmg=function() {
   this.marker.refreshImglist(-1);
 };
 PhotoGroupMarker.prototype.nextimg=function() {
-  if(this.marker.currpos >= this.marker.infoWindow.imags.length-1) return;
+  if(this.marker.currpos >= this.marker.infoWindow.content.imags.length-1) return;
   this.marker.currpos++;
   this.marker.refreshImglist(1);
 };

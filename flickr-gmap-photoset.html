@@ -562,6 +562,13 @@ try {
   this.regroupphotos();
 } finally {
 }};
+BrowseMap.prototype.clearOverlays=function() {
+  for (var i=0,len=temp_bounds.length; i<len ; i++) {
+    var b = temp_bounds[i];
+    if(b.photos.length == 0) { continue; }
+    if(b.maker) this.removeOverlay(b.maker);
+  }
+}
 BrowseMap.prototype.regroupphotos=function() {
   if(!this.photos) return;
   var photos=this.photos;

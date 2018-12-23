@@ -598,7 +598,7 @@ BrowseMap.prototype.regroupphotos=function() {
 
   if(this.tracks.length > 0) {
     for(var i=0,len=this.tracks.length; i<len; ++i) {
-      this.addOverlay(new window.GPolyline(this.tracks[i]));
+      this.addOverlay(new google.maps.Polyline(this.tracks[i]));
     }
     this.tracks = [];
   }
@@ -649,7 +649,7 @@ BrowseMap.prototype.regroupphotos=function() {
       var b = temp_bounds[i];
       trackpoints.push(b.getCenter());
     }
-    this.addOverlay(new window.GPolyline(trackpoints));
+    this.addOverlay(new google.maps.Polyline(trackpoints));
   }
 
   for (var i=0,len=temp_bounds.length; i<len ; i++) {

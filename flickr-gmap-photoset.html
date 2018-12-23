@@ -563,8 +563,8 @@ try {
 } finally {
 }};
 BrowseMap.prototype.clearOverlays=function() {
-  for (var i=0,len=temp_bounds.length; i<len ; i++) {
-    var b = temp_bounds[i];
+  for (var i=0,len=this.temp_bounds.length; i<len ; i++) {
+    var b = this.temp_bounds[i];
     if(b.photos.length == 0) { continue; }
     if(b.maker) this.removeOverlay(b.maker);
   }

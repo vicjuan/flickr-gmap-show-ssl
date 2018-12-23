@@ -649,7 +649,8 @@ BrowseMap.prototype.regroupphotos=function() {
       var b = temp_bounds[i];
       trackpoints.push(b.getCenter());
     }
-    this.addOverlay(new google.maps.Polyline(trackpoints));
+    var polyline = new google.maps.Polyline(trackpoints);
+    ployline.setMap(this);
   }
 
   for (var i=0,len=temp_bounds.length; i<len ; i++) {

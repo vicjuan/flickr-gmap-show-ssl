@@ -461,7 +461,7 @@ var BrowseMap=window.BrowseMap=function(container, opts){
 
   return;
 };
-$extend(BrowseMap, google.maps.Map);
+$extend(BrowseMap, window.GMap2);
 BrowseMap.prototype.updateOptionInfo=function(){
   this.options.info.innerHTML=this.pageCurr+' / '+this.pageTotal;
 };
@@ -585,7 +585,7 @@ BrowseMap.prototype.regroupphotos=function() {
   }
   
   if(this.datetracking) {
-    this.clearOverlays();
+    this.removeOverlay();
   } else {
     if(this.temp_bounds && this.temp_bounds.length) {
       for (var i=0,len=this.temp_bounds.length; i<len ; i++) {
